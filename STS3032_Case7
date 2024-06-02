@@ -1,0 +1,65 @@
+case 7:
+{
+    const int maxTorque = 200;
+    bool stop = false;
+    int count1 = 0, count2 = 0, count3 = 0, count4 = 0;
+    float lastPos1 = 0, lastPos2 = 0, lastPos3 = 0, lastPos4 = 0;
+
+    finger.angle_control(1, 2500, 2000);
+    finger.angle_control(2, 2500, 2000);
+    finger.angle_control(3, 2500, 2000);
+    finger.angle_control(4, 2500, 2000);
+
+    while (!stop)
+    {
+        // for motor 1
+        finger.ReadTorque(1);
+        finger.ReadPOS(1);
+        int Tor1 = finger.getTorque();
+        float Pos1 = finger.getAngle(); 
+        Serial.print("ID: 1 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor1);
+        Serial.print("Position: ");
+        Serial.println(Pos1);
+
+        if (abs(Tor1) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 1 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+
+        if (Pos1 < 180 && lastPos1 > 180)
+        {
+            count1++;
+        }
+        lastPos1 = Pos1;
+
+        delay(100);
+    }
+
+    if (stop)
+    {
+        finger.ReadPOS(1);
+        float Position1 = finger.getAngle(); // 读取当前停止位置
+
+        if (Position1 < 180 && lastPos1 > 180)
+        {
+            count1++;
+        }
+        // 更新 lastPos1
+        lastPos1 = Position1;
+
+        finger.angle_control(1, Position1 + (count1 * 360) + 2, 1);
+    }
+
+    delay(3000);
+    finger.angle_control(1, 0, 3000);
+    finger.angle_control(2, 0, 3000);
+    finger.angle_control(3, 0, 3000);
+    finger.angle_control(4, 0, 3000);
+}
+break;
