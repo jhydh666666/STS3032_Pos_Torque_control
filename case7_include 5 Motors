@@ -1,0 +1,227 @@
+case 7:
+{
+    const int maxTorque = 200;
+    bool stop = false;
+    int count1 = 0, count2 = 0, count3 = 0, count4 = 0, count5 = 0;
+    float lastPos1 = 0, lastPos2 = 0, lastPos3 = 0, lastPos4 = 0, lastPos5 = 0;
+
+    finger.angle_control(1, 2500, 2000);
+    finger.angle_control(2, 2500, 2000);
+    finger.angle_control(3, 2500, 2000);
+    finger.angle_control(4, 2500, 2000);
+    finger.angle_control(5, 2500, 2000);
+
+    while (!stop)
+    {
+        // for motor 1
+        finger.ReadTorque(1);
+        finger.ReadPOS(1);
+        int Tor1 = finger.getTorque();
+        float Pos1 = finger.getAngle(); 
+        Serial.print("ID: 1 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor1);
+        Serial.print("Position: ");
+        Serial.println(Pos1);
+
+        if (abs(Tor1) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 1 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+        if (Pos1 < 180 && lastPos1 > 180)
+        {
+            count1++;
+        }
+        lastPos1 = Pos1;
+
+        delay(100);
+
+        // for motor 2
+        finger.ReadTorque(2);
+        finger.ReadPOS(2);
+        int Tor2 = finger.getTorque();
+        float Pos2 = finger.getAngle(); 
+        Serial.print("ID: 2 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor2);
+        Serial.print("Position: ");
+        Serial.println(Pos2);
+
+        if (abs(Tor2) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 2 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+        if (Pos2 < 180 && lastPos2 > 180)
+        {
+            count2++;
+        }
+        lastPos2 = Pos2;
+
+        delay(100);
+
+        // for motor 3
+        finger.ReadTorque(3);
+        finger.ReadPOS(3);
+        int Tor3 = finger.getTorque();
+        float Pos3 = finger.getAngle(); 
+        Serial.print("ID: 3 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor3);
+        Serial.print("Position: ");
+        Serial.println(Pos3);
+
+        if (abs(Tor3) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 3 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+        if (Pos3 < 180 && lastPos3 > 180)
+        {
+            count3++;
+        }
+        lastPos3 = Pos3;
+
+        delay(100);
+
+        // for motor 4
+        finger.ReadTorque(4);
+        finger.ReadPOS(4);
+        int Tor4 = finger.getTorque();
+        float Pos4 = finger.getAngle(); 
+        Serial.print("ID: 4 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor4);
+        Serial.print("Position: ");
+        Serial.println(Pos4);
+
+        if (abs(Tor4) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 4 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+        if (Pos4 < 180 && lastPos4 > 180)
+        {
+            count4++;
+        }
+        lastPos4 = Pos4;
+
+        delay(100);
+
+        // for motor 5
+        finger.ReadTorque(5);
+        finger.ReadPOS(5);
+        int Tor5 = finger.getTorque();
+        float Pos5 = finger.getAngle(); 
+        Serial.print("ID: 5 ");
+        Serial.print("Torque: ");
+        Serial.println(Tor5);
+        Serial.print("Position: ");
+        Serial.println(Pos5);
+
+        if (abs(Tor5) > maxTorque)
+        {
+            stop = true;
+            Serial.print("ID: 5 ");
+            Serial.println("Exceeded limit torque, stopping motor !!");
+            break;
+        }
+
+        if (Pos5 < 180 && lastPos5 > 180)
+        {
+            count5++;
+        }
+        lastPos5 = Pos5;
+
+        delay(100);
+    }
+
+    if (stop)
+    {
+        // for motor 1
+        finger.ReadPOS(1);
+        float Position1 = finger.getAngle(); // 读取当前停止位置
+
+        if (Position1 < 180 && lastPos1 > 180)
+        {
+            count1++;
+        }
+        // 更新 lastPos1
+        lastPos1 = Position1;
+
+        finger.angle_control(1, Position1 + (count1 * 360) + 30, 30);
+
+        // for motor 2
+        finger.ReadPOS(2);
+        float Position2 = finger.getAngle(); 
+
+        if (Position2 < 180 && lastPos2 > 180)
+        {
+            count2++;
+        }
+        
+        lastPos2 = Position2;
+
+        finger.angle_control(2, Position2 + (count2 * 360) + 30, 30);
+
+        // for motor 3
+        finger.ReadPOS(3);
+        float Position3 = finger.getAngle(); 
+
+        if (Position3 < 180 && lastPos3 > 180)
+        {
+            count3++;
+        }
+        
+        lastPos3 = Position3;
+
+        finger.angle_control(3, Position3 + (count3 * 360) + 30, 30);
+
+        // for motor 4
+        finger.ReadPOS(4);
+        float Position4 = finger.getAngle(); 
+
+        if (Position4 < 180 && lastPos4 > 180)
+        {
+            count4++;
+        }
+        
+        lastPos4 = Position4;
+
+        finger.angle_control(4, Position4 + (count4 * 360) + 30, 30);
+
+        // for motor 5
+        finger.ReadPOS(5);
+        float Position5 = finger.getAngle(); 
+
+        if (Position5 < 180 && lastPos5 > 180)
+        {
+            count5++;
+        }
+        
+        lastPos5 = Position5;
+
+        finger.angle_control(5, Position5 + (count5 * 360) + 30, 30);
+    }
+
+    delay(3000);
+    finger.angle_control(1, 0, 3000);
+    finger.angle_control(2, 0, 3000);
+    finger.angle_control(3, 0, 3000);
+    finger.angle_control(4, 0, 3000);
+    finger.angle_control(5, 0, 3000);
+}
+break;
